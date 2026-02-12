@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>OpenClaw - Bookmark Manager</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h1>OpenClaw</h1>
+                <button id="sidebar-toggle" class="btn-icon" title="Toggle sidebar">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Search -->
+            <div class="sidebar-section">
+                <div class="search-box">
+                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="M21 21l-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Zoek bookmarks...">
+                </div>
+            </div>
+            
+            <!-- Folders -->
+            <div class="sidebar-section">
+                <h3 class="section-title">Folders</h3>
+                <div id="folders-list" class="folders-list">
+                    <div class="loading">Loading...</div>
+                </div>
+                <button id="add-folder-btn" class="btn-small btn-secondary">+ Nieuwe Folder</button>
+            </div>
+            
+            <!-- Tags -->
+            <div class="sidebar-section">
+                <h3 class="section-title">Tags</h3>
+                <div id="tags-list" class="tags-list">
+                    <div class="loading">Loading...</div>
+                </div>
+            </div>
+            
+            <!-- Favorites Filter -->
+            <div class="sidebar-section">
+                <button id="favorites-filter-btn" class="btn-secondary btn-full">
+                    ⭐ Alleen favorieten
+                </button>
+            </div>
+            
+            <!-- Theme Toggle -->
+            <div class="sidebar-footer">
+                <button id="theme-toggle" class="btn-icon" title="Toggle theme">
+                    <svg id="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg id="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <span>Alle Bookmarks</span>
+                </div>
+                <div class="actions">
+                    <button id="add-bookmark-btn" class="btn-primary">
+                        + Nieuw Bookmark
+                    </button>
+                    <button id="refresh-btn" class="btn-icon" title="Refresh">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 4v6h-6M1 20v-6h6"/>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Bookmarks List -->
+            <div id="bookmarks-container" class="bookmarks-container">
+                <div class="loading">Loading bookmarks...</div>
+            </div>
+            
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display:none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h2>Geen bookmarks gevonden</h2>
+                <p>Klik op "+ Nieuw Bookmark" om te beginnen</p>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav" id="mobile-nav">
+        <button class="nav-item active" data-view="bookmarks">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span>Bookmarks</span>
+        </button>
+        <button class="nav-item" data-view="folders">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+            <span>Folders</span>
+        </button>
+        <button class="nav-item" data-view="tags">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+            </svg>
+            <span>Tags</span>
+        </button>
+        <button class="nav-item" data-view="favorites">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>Favorites</span>
+        </button>
+    </nav>
+    
+    <!-- Bookmark Modal -->
+    <div id="bookmark-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Nieuw Bookmark</h2>
+                <button class="btn-icon close-modal" title="Sluiten">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="bookmark-form" class="modal-body">
+                <input type="hidden" id="bookmark-id">
+                
+                <div class="form-group">
+                    <label for="bookmark-title">Titel *</label>
+                    <input type="text" id="bookmark-title" required placeholder="Bookmark titel">
+                </div>
+                
+                <div class="form-group">
+                    <label for="bookmark-url">URL *</label>
+                    <input type="url" id="bookmark-url" required placeholder="https://example.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="bookmark-description">Beschrijving</label>
+                    <textarea id="bookmark-description" rows="3" placeholder="Optionele beschrijving"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bookmark-folder">Folder</label>
+                    <select id="bookmark-folder">
+                        <option value="">Geen folder</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="bookmark-tags">Tags (komma gescheiden)</label>
+                    <input type="text" id="bookmark-tags" placeholder="productivity, tools">
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <label>
+                        <input type="checkbox" id="bookmark-favorite">
+                        <span>⭐ Toevoegen aan favorieten</span>
+                    </label>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal">Annuleren</button>
+                    <button type="submit" class="btn-primary">Opslaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Folder Modal -->
+    <div id="folder-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Nieuwe Folder</h2>
+                <button class="btn-icon close-modal" title="Sluiten">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="folder-form" class="modal-body">
+                <div class="form-group">
+                    <label for="folder-name">Naam *</label>
+                    <input type="text" id="folder-name" required placeholder="Folder naam">
+                </div>
+                
+                <div class="form-group">
+                    <label for="folder-parent">Parent Folder</label>
+                    <select id="folder-parent">
+                        <option value="">Geen parent</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="folder-description">Beschrijving</label>
+                    <textarea id="folder-description" rows="2" placeholder="Optionele beschrijving"></textarea>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal">Annuleren</button>
+                    <button type="submit" class="btn-primary">Opslaan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content modal-small">
+            <div class="modal-header">
+                <h2>Bevestigen</h2>
+                <button class="btn-icon close-modal" title="Sluiten">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="delete-message">Weet je zeker dat je dit wilt verwijderen?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal">Annuleren</button>
+                    <button type="button" id="confirm-delete-btn" class="btn-danger">Verwijderen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display:none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

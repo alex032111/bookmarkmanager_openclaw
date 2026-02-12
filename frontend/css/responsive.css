@@ -1,0 +1,313 @@
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 250px;
+        transform: translateX(-100%);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    .sidebar.open + .main-content,
+    body.sidebar-open .main-content {
+        margin-left: 0;
+    }
+    
+    .bookmarks-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        padding: 1rem;
+    }
+}
+
+/* Mobile (< 768px) */
+@media (max-width: 767px) {
+    :root {
+        --sidebar-width: 100%;
+        --header-height: 56px;
+        --mobile-nav-height: 56px;
+    }
+    
+    /* Hide sidebar by default on mobile */
+    .sidebar {
+        width: 100%;
+        transform: translateX(-100%);
+        z-index: 300;
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    /* Overlay when sidebar is open */
+    .sidebar::after {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: var(--sidebar-width);
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+    
+    .sidebar.open::after {
+        display: block;
+    }
+    
+    /* Main content */
+    .main-content {
+        margin-left: 0;
+        padding-bottom: var(--mobile-nav-height);
+    }
+    
+    /* Top bar */
+    .top-bar {
+        padding: 0.75rem 1rem;
+        height: var(--header-height);
+    }
+    
+    .breadcrumbs {
+        font-size: 0.8125rem;
+    }
+    
+    .btn-primary {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.8125rem;
+    }
+    
+    .btn-primary span {
+        display: none;
+    }
+    
+    .btn-primary::after {
+        content: '+';
+        font-size: 1.25rem;
+        font-weight: 700;
+    }
+    
+    /* Show mobile navigation */
+    .mobile-nav {
+        display: flex;
+    }
+    
+    /* Bookmarks grid */
+    .bookmarks-container {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    /* Bookmark card adjustments */
+    .bookmark-card {
+        padding: 0.875rem;
+    }
+    
+    .bookmark-favicon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .bookmark-title {
+        font-size: 0.9375rem;
+    }
+    
+    .bookmark-url {
+        font-size: 0.6875rem;
+    }
+    
+    .bookmark-description {
+        font-size: 0.75rem;
+        -webkit-line-clamp: 3;
+    }
+    
+    /* Bookmark actions */
+    .bookmark-actions {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+    
+    /* Modal adjustments */
+    .modal {
+        padding: 0.5rem;
+    }
+    
+    .modal-content {
+        max-height: 85vh;
+        margin: 0;
+        border-radius: 0.75rem;
+    }
+    
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-header h2 {
+        font-size: 1.125rem;
+    }
+    
+    /* Form adjustments */
+    .form-group input[type="text"],
+    .form-group input[type="url"],
+    .form-group textarea,
+    .form-group select {
+        padding: 0.5625rem 0.6875rem;
+        font-size: 1rem;
+    }
+    
+    /* Touch-friendly buttons */
+    .bookmark-action-btn {
+        padding: 0.5rem;
+    }
+    
+    .nav-item {
+        padding: 0.375rem;
+    }
+    
+    /* Sidebar toggle on mobile */
+    #sidebar-toggle {
+        display: flex;
+    }
+}
+
+/* Extra small mobile (< 375px) */
+@media (max-width: 374px) {
+    .bookmark-card {
+        padding: 0.75rem;
+    }
+    
+    .bookmark-favicon {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .bookmark-title {
+        font-size: 0.875rem;
+    }
+    
+    .bookmark-url {
+        font-size: 0.625rem;
+    }
+    
+    .bookmark-description {
+        font-size: 0.6875rem;
+        -webkit-line-clamp: 2;
+    }
+    
+    .tag-chip {
+        font-size: 0.625rem;
+        padding: 0.125rem 0.5rem;
+    }
+    
+    .bookmark-tag {
+        font-size: 0.625rem;
+        padding: 0.0625rem 0.3125rem;
+    }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .mobile-nav {
+        display: none;
+    }
+    
+    .main-content {
+        padding-bottom: 0;
+    }
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .mobile-nav,
+    .top-bar,
+    .bookmark-actions,
+    .add-bookmark-btn,
+    .refresh-btn {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+    }
+    
+    .bookmarks-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .bookmark-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .bookmark-favicon {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* Reduce motion preference */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Touch devices */
+@media (hover: none) and (pointer: coarse) {
+    .bookmark-card:active {
+        transform: scale(0.98);
+    }
+    
+    .folder-item:active,
+    .tag-chip:active {
+        transform: scale(0.95);
+    }
+    
+    .bookmark-action-btn:active,
+    .btn-primary:active,
+    .btn-secondary:active {
+        transform: scale(0.95);
+    }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Mobile scrollbar adjustments */
+@media (max-width: 767px) {
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+    }
+}
